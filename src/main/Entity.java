@@ -45,8 +45,8 @@ public class Entity {
         if(e == this)return false;
         return getBound().intersects(e.getBound());
     }
-    public void render(Graphics2D g2d){
+    public void render(Graphics2D g2d,Image i){
         //g2d.fillRect(x + 1, y + 1, size - 2, size2 - 2);
-        g2d.drawImage(GamePanel.p, x + 1, y + 1,50,150, null);
+        g2d.drawImage(i, x + 1, y + 1,50,150, null);
     }
 }

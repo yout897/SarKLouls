@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -65,12 +66,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
 
-        if (k == KeyEvent.VK_W) {
-            //up = true;
-            grounded = false;
-            dy += 50;
-            grounded = true;
-        }
+//        if (k == KeyEvent.VK_W) {
+//            
+//        }
 //        if (k == KeyEvent.VK_S) {
 //            down = true;
 //        }
@@ -129,8 +127,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     //Function to initialize anything that gets added once
     public void initialize() {
         
-        File file = new File("\\\\JFRCVIFS.Student.UGDSB.ED\\Home\\Students\\AlDiC2547\\Documents\\back.png");
-        File file2 = new File("\\\\JFRCVIFS.Student.UGDSB.ED\\Home\\Students\\AlDiC2547\\Documents\\p.png");
+        URL url = getClass().getResource("back1.png");
+        URL url1 = getClass().getResource("char1.png");
+        
+        File file = new File(url.getPath());
+        File file2 = new File(url1.getPath());
         try {
             u = ImageIO.read(file);
             p = ImageIO.read(file2);
@@ -174,13 +175,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (dy > HEIGHT - 10) {
             dy -= 10;
         }
-
-        if(grounded){
-            dy = 250;
-        }else{
-            dy -= 4;
-        }
-        
         
         pl.setPos(dx, dy);
     }
@@ -190,7 +184,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             g2d.clearRect(0, 0, WIDTH, HEIGHT);
             g2d.setColor(Color.BLUE);
             g2d.drawImage(u, 0, 0,WIDTH,HEIGHT, null);
-            pl.render(g2d);
+            pl.render(g2d,p);
             
-        }
+    }
+    
 }
