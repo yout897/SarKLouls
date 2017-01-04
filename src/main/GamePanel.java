@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean running;
     private Thread thread;
     private long targetT;
-    public static Image u;
+    public static Image bk1,bk2;
     public static Image p;
     //Rendering
     private Graphics2D g2d;
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     //Variables
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
-    private int dx=250, dy=250;
+    private int dx=250, dy=250,stage = 1;
     private boolean grounded = true,up, down, left, right;
     
     public GamePanel() {
@@ -127,14 +127,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     //Function to initialize anything that gets added once
     public void initialize() {
         
-        URL url = getClass().getResource("back1.png");
-        URL url1 = getClass().getResource("char1.png");
+        URL bck1 = getClass().getResource("back1.png");
+        URL bck2 = getClass().getResource("back2.jpg");
         
-        File file = new File(url.getPath());
-        File file2 = new File(url1.getPath());
+        URL chr1 = getClass().getResource("char1.png");
+        
+        File back1 = new File(bck1.getPath());
+        File back2 = new File(bck2.getPath());
+        
+        File char1 = new File(chr1.getPath());
         try {
-            u = ImageIO.read(file);
-            p = ImageIO.read(file2);
+            if(stage == 1){
+                bk1 = ImageIO.read(back1);
+            }if(stage == 2){
+                bk2 = ImageIO.read(back2);
+            }
+            p = ImageIO.read(char1);
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -169,13 +177,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             dx += 1 * 1.5;
         }
 
-        if (dx > WIDTH - 10) {
-            dx -= 10;
+        if (dx > WIDTH - 50 && stage == 1) {
+            stage = 2;
+            dx = 250;
+            dy = 250;
         }
         if (dy > HEIGHT - 10) {
             dy -= 10;
         }
-        
         pl.setPos(dx, dy);
     }
 
@@ -183,9 +192,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public void render(Graphics2D g2d) {
             g2d.clearRect(0, 0, WIDTH, HEIGHT);
             g2d.setColor(Color.BLUE);
-            g2d.drawImage(u, 0, 0,WIDTH,HEIGHT, null);
+            if(stage == 1){
+                //g2d.clearRect(0, 0, WIDTH, HEIGHT);
+                g2d.drawImage(bk1, 0,0,WIDTH,HEIGHT,null);
+            }
+            else if(stage == 2){
+                //g2d.clearRect(0, 0, WIDTH, HEIGHT);
+                g2d.drawImage(bk2, 0,0,WIDTH,HEIGHT,null);
+            }
             pl.render(g2d,p);
-            
     }
     
 }
