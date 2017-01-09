@@ -35,7 +35,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private BufferedImage image;
     //Entities
     private final int SIZE = 20;
-    private Entity pl;
+    private Player pl;
+    private Enemy e1;
     //Variables
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
@@ -151,7 +152,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         
         running = true;
 
-        pl = new Entity(SIZE, SIZE);
+        pl = new Player(SIZE, SIZE,100,true,5);
+        e1 = new Enemy(SIZE,SIZE,100,true,5);
+        e1.setPos(2000, 250);
     }
 
     //Draws the background and places anything that needs to be rendered ontop
@@ -186,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             dy -= 10;
         }
         pl.setPos(dx, dy);
+        e1.move();
     }
 
     //Rendering graphics
@@ -200,7 +204,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 //g2d.clearRect(0, 0, WIDTH, HEIGHT);
                 g2d.drawImage(bk2, 0,0,WIDTH,HEIGHT,null);
             }
-            pl.render(g2d,p);
+            pl.render(g2d,50,150,p);
+            e1.render(g2d, 50, 100, p);
     }
     
 }

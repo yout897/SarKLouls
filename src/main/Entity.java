@@ -10,18 +10,18 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Entity {
+abstract class Entity {
     
-    private int x,y,size,size2;
+    public static int x,y,size,size2;
     
     public Entity(int size,int size2){
         this.size = size;
         this.size2 = size2;
     }
-    public int getX(){
+    public static int getX(){
         return x;
     }
-    public int getY(){
+    public static int getY(){
         return x;
     }
     public void setX(int x){
@@ -45,8 +45,8 @@ public class Entity {
         if(e == this)return false;
         return getBound().intersects(e.getBound());
     }
-    public void render(Graphics2D g2d,Image i){
+    public void render(Graphics2D g2d,int si,int sy,Image i){
         //g2d.fillRect(x + 1, y + 1, size - 2, size2 - 2);
-        g2d.drawImage(i, x + 1, y + 1,50,150, null);
+        g2d.drawImage(i, x + 1, y + 1,si,sy, null);
     }
 }
