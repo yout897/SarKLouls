@@ -21,5 +21,4 @@ public class Player extends Entity{
         this.alive = alive;
         this.damage = damage;
     }
-    
 }

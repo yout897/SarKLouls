@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private Thread thread;
     private long targetT;
     public static Image bk1,bk2;
-    public static Image p;
+    public static Image p,pW1,pW2;
     //Rendering
     private Graphics2D g2d;
     private BufferedImage image;
@@ -40,8 +40,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     //Variables
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
-    private int dx=250, dy=250,stage = 1;
-    private boolean grounded = true,up, down, left, right;
+    private int dx=250, dy=250,stage = 1,y = 0;
+    private boolean grounded = true,up, down, left, right,idle = true,walking = false;
     
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -75,9 +75,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        }
         if (k == KeyEvent.VK_A) {
             left = true;
+            idle = false;
+            walking = true;
         }
         if (k == KeyEvent.VK_D) {
             right = true;
+            idle = false;
+            walking = true;
         }
     }
 
@@ -93,9 +97,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        }
         if (k == KeyEvent.VK_A) {
             left = false;
+            walking = false;
+            idle = true;
         }
         if (k == KeyEvent.VK_D) {
             right = false;
+            walking = false;
+            idle = true;
         }
     }
 
@@ -127,26 +135,38 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     //Function to initialize anything that gets added once
     public void initialize() {
+        idle = true;
+        walking = false;
         
         URL bck1 = getClass().getResource("back1.png");
         URL bck2 = getClass().getResource("back2.jpg");
         
         URL chr1 = getClass().getResource("char1.png");
+        URL chr1W1 = getClass().getResource("char1W1.png");
+        URL chr1W2 = getClass().getResource("char1W2.png");
         
         File back1 = new File(bck1.getPath());
         File back2 = new File(bck2.getPath());
         
         File char1 = new File(chr1.getPath());
+        File char1W1 = new File(chr1W1.getPath());
+        File char1W2 = new File(chr1W2.getPath());
+        
+        
         try {
             if(stage == 1){
                 bk1 = ImageIO.read(back1);
-            }if(stage == 2){
+            }
+            if(stage == 2){
                 bk2 = ImageIO.read(back2);
             }
             p = ImageIO.read(char1);
+            pW1 = ImageIO.read(char1W1);
+            pW2 = ImageIO.read(char1W2);
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
         g2d = image.createGraphics();
         
@@ -154,7 +174,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         pl = new Player(SIZE, SIZE,100,true,5);
         e1 = new Enemy(SIZE,SIZE,100,true,5);
-        e1.setPos(2000, 250);
+        //e1.setPos(2000, 250);
     }
 
     //Draws the background and places anything that needs to be rendered ontop
@@ -189,23 +209,36 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             dy -= 10;
         }
         pl.setPos(dx, dy);
-        e1.move();
+        //e1.move();
     }
 
     //Rendering graphics
     public void render(Graphics2D g2d) {
-            g2d.clearRect(0, 0, WIDTH, HEIGHT);
-            g2d.setColor(Color.BLUE);
             if(stage == 1){
                 //g2d.clearRect(0, 0, WIDTH, HEIGHT);
                 g2d.drawImage(bk1, 0,0,WIDTH,HEIGHT,null);
-            }
-            else if(stage == 2){
+            }if(stage == 2){
                 //g2d.clearRect(0, 0, WIDTH, HEIGHT);
                 g2d.drawImage(bk2, 0,0,WIDTH,HEIGHT,null);
             }
-            pl.render(g2d,50,150,p);
-            e1.render(g2d, 50, 100, p);
+            if(idle = true){
+                pl.render(g2d,50,150,p);
+            }
+            else if(idle = false){
+                if(y == 0){
+                    pl.render(g2d,50,150,pW1);
+                    y = 1;
+                }
+                else if(y == 1){
+                    pl.render(g2d,50,150,p);
+                    y = 2;
+                }
+                else if(y == 2){
+                    pl.render(g2d,50,150,pW2);
+                    y = 0;
+                }
+            }
+            //e1.render(g2d, 50, 100, p);
     }
     
 }
