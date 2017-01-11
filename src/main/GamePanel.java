@@ -156,13 +156,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         try {
             if(stage == 1){
                 bk1 = ImageIO.read(back1);
+                bk1 = bk1.getScaledInstance(WIDTH, HEIGHT, 1);
             }
             if(stage == 2){
                 bk2 = ImageIO.read(back2);
+                bk2 = bk2.getScaledInstance(WIDTH, HEIGHT, 1);
             }
             p = ImageIO.read(char1);
+            p = p.getScaledInstance(50, 150, 1);
             pW1 = ImageIO.read(char1W1);
+            pW1 = pW1.getScaledInstance(50, 150, 1);
             pW2 = ImageIO.read(char1W2);
+            pW2 = pW2.getScaledInstance(50, 150, 1);
+            
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -216,25 +222,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public void render(Graphics2D g2d) {
             if(stage == 1){
                 //g2d.clearRect(0, 0, WIDTH, HEIGHT);
-                g2d.drawImage(bk1, 0,0,WIDTH,HEIGHT,null);
-            }if(stage == 2){
+                g2d.drawImage(bk1, 0,0,null);
+            }else if(stage == 2){
                 //g2d.clearRect(0, 0, WIDTH, HEIGHT);
-                g2d.drawImage(bk2, 0,0,WIDTH,HEIGHT,null);
+                g2d.drawImage(bk2, 0,0,null);
             }
             if(idle = true){
-                pl.render(g2d,50,150,p);
+                pl.render(g2d,p);
             }
             else if(idle = false){
                 if(y == 0){
-                    pl.render(g2d,50,150,pW1);
+                    pl.render(g2d,pW1);
                     y = 1;
                 }
                 else if(y == 1){
-                    pl.render(g2d,50,150,p);
+                    pl.render(g2d,p);
                     y = 2;
                 }
                 else if(y == 2){
-                    pl.render(g2d,50,150,pW2);
+                    pl.render(g2d,pW2);
                     y = 0;
                 }
             }

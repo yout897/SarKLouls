@@ -45,8 +45,8 @@ abstract class Entity {
         if(e == this)return false;
         return getBound().intersects(e.getBound());
     }
-    public void render(Graphics2D g2d,int si,int sy,Image i){
+    public void render(Graphics2D g2d,Image i){
         //g2d.fillRect(x + 1, y + 1, size - 2, size2 - 2);
-        g2d.drawImage(i, x + 1, y + 1,si,sy, null);
+        g2d.drawImage(i, x + 1, y + 1, null);
     }
 }

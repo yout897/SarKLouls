@@ -36,7 +36,7 @@ public class Enemy extends Entity{
             Enemy.y++;
     }
     @Override
-    public void render(Graphics2D g2d,int si,int sy,Image i){
-        g2d.drawImage(i, Enemy.x + 1, Enemy.y + 1,si,sy, null);
+    public void render(Graphics2D g2d,Image i){
+        g2d.drawImage(i, Enemy.x + 1, Enemy.y + 1, null);
     }
 }
