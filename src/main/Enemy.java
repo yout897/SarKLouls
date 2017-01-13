@@ -35,8 +35,8 @@ public class Enemy extends Entity{
         while(Enemy.getY() < pY)
             Enemy.y++;
     }
-    @Override
-    public void render(Graphics2D g2d,Image i){
-        g2d.drawImage(i, Enemy.x + 1, Enemy.y + 1, null);
-    }
+//    @Override
+//    public void render(Graphics2D g2d,Image i){
+//        g2d.drawImage(i, Enemy.x + 1, Enemy.y + 1, null);
+//    }
 }

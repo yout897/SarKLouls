@@ -5,7 +5,6 @@
  */
 package main;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -179,7 +178,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         running = true;
 
         pl = new Player(SIZE, SIZE,100,true,5);
-        e1 = new Enemy(SIZE,SIZE,100,true,5);
+        //e1 = new Enemy(SIZE,SIZE,100,true,5);
         //e1.setPos(2000, 250);
     }
 
