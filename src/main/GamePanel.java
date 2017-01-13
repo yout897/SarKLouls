@@ -74,12 +74,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        }
         if (k == KeyEvent.VK_A) {
             left = true;
-            idle = false;
             walking = true;
         }
         if (k == KeyEvent.VK_D) {
             right = true;
-            idle = false;
             walking = true;
         }
     }
@@ -97,12 +95,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (k == KeyEvent.VK_A) {
             left = false;
             walking = false;
-            idle = true;
+            //idle = false;
         }
         if (k == KeyEvent.VK_D) {
             right = false;
             walking = false;
-            idle = true;
+            //idle = false;
         }
     }
 
@@ -199,10 +197,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //            dy += 1 * 0.5;
 //        }
         if (left) {
+            idle = false;
             dx -= 1 * 0.5;
+            idle = true;
+            
         }
         if (right) {
+            idle = false;
             dx += 1 * 1.5;
+            idle = true;
+            
         }
 
         if (dx > WIDTH - 50 && stage == 1) {
@@ -219,30 +223,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     //Rendering graphics
     public void render(Graphics2D g2d) {
-            if(stage == 1){
-                //g2d.clearRect(0, 0, WIDTH, HEIGHT);
-                g2d.drawImage(bk1, 0,0,null);
-            }else if(stage == 2){
-                //g2d.clearRect(0, 0, WIDTH, HEIGHT);
-                g2d.drawImage(bk2, 0,0,null);
+        if(stage == 1){
+            //g2d.clearRect(0, 0, WIDTH, HEIGHT);
+            g2d.drawImage(bk1, 0,0,null);
+        }else if(stage == 2){
+            //g2d.clearRect(0, 0, WIDTH, HEIGHT);
+            g2d.drawImage(bk2, 0,0,null);
+        }
+        if(idle = true){
+            //pl.render(g2d,p);
+
+        }
+        if(idle = true){
+
+            if(y == 0){
+                pl.render(g2d,pW1);
+                y = 1;
             }
-            if(idle = true){
+            else if(y == 1){
                 pl.render(g2d,p);
+                y = 2;
             }
-            else if(idle = false){
-                if(y == 0){
-                    pl.render(g2d,pW1);
-                    y = 1;
-                }
-                else if(y == 1){
-                    pl.render(g2d,p);
-                    y = 2;
-                }
-                else if(y == 2){
-                    pl.render(g2d,pW2);
-                    y = 0;
-                }
+            else if(y == 2){
+                pl.render(g2d,pW2);
+                y = 0;
             }
+        }
             //e1.render(g2d, 50, 100, p);
     }
     
