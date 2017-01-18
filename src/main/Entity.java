@@ -10,18 +10,23 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-abstract class Entity {
+public class Entity {
     
     public static int x,y,size,size2;
+    int health,damage;
+    boolean alive;
     
-    public Entity(int size,int size2){
+    public Entity(int size,int size2,int health,boolean alive,int damage){
         this.size = size;
         this.size2 = size2;
+        this.health = health;
+        this.alive = alive;
+        this.damage = damage;
     }
-    public static int getX(){
+    public int getX(){
         return x;
     }
-    public static int getY(){
+    public int getY(){
         return x;
     }
     public void setX(int x){
@@ -37,6 +42,9 @@ abstract class Entity {
     public void move(int x, int y){
         x += x;
         y += y;
+    }
+    public boolean alive(){
+        return alive;
     }
     public Rectangle getBound(){
         return new Rectangle(x,y,size,size2);

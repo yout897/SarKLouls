@@ -27,15 +27,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean running;
     private Thread thread;
     private long targetT;
-    public static Image p,pW1,pW2;
+    public static Image p,pW1,pW2,chrE;
     //Rendering
     private Graphics2D g2d;
     private BufferedImage image;
     //Entities
     private final int SIZE = 20;
-    private Player pl;
-    private Enemy e1;
-    public Stage bk1,bk2;
+    private Entity pl;
+    private Entity e1;
+    public Stage bk1,bk2,bk3;
     //Variables
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
@@ -136,23 +136,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         walking = false;
         
         URL bck1 = getClass().getResource("back1.png");
-        URL bck2 = getClass().getResource("back2.jpg");
+        URL bck2 = getClass().getResource("back2.png");
+        URL bck3 = getClass().getResource("back3.png");
         
         URL chr1 = getClass().getResource("char1.png");
         URL chr1W1 = getClass().getResource("char1W1.png");
         URL chr1W2 = getClass().getResource("char1W2.png");
+        URL chE = getClass().getResource("charE.png");
         
         File back1 = new File(bck1.getPath());
         File back2 = new File(bck2.getPath());
+        File back3 = new File(bck3.getPath());
         
         File char1 = new File(chr1.getPath());
         File char1W1 = new File(chr1W1.getPath());
         File char1W2 = new File(chr1W2.getPath());
+        File charE = new File(chE.getPath());
         
         bk1 = new Stage(WIDTH,HEIGHT,back1);
-        bk1.set();
         bk2 = new Stage(WIDTH,HEIGHT,back2);
-        bk2.set();
+        bk3 = new Stage(WIDTH,HEIGHT,back3);
         try {
             p = ImageIO.read(char1);
             p = p.getScaledInstance(50, 150, ERROR);
@@ -160,6 +163,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             pW1 = pW1.getScaledInstance(50, 150, ERROR);
             pW2 = ImageIO.read(char1W2); 
             pW2 = pW2.getScaledInstance(50, 150, ERROR);
+            chrE = ImageIO.read(charE);
+            chrE = chrE.getScaledInstance(60,120,ERROR);
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -169,9 +174,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         
         running = true;
 
-        pl = new Player(SIZE, SIZE,100,true,5);
-        //e1 = new Enemy(SIZE,SIZE,100,true,5);
-        //e1.setPos(2000, 250);
+        pl = new Entity(SIZE, SIZE,100,true,5);
+        e1 = new Entity(SIZE,SIZE,100,false,5);
+        e1.setPos(2000, 250);
     }
 
     //Draws the background and places anything that needs to be rendered ontop
@@ -190,62 +195,90 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        if (down) {
 //            dy += 1 * 0.5;
 //        }
-        if (left) {
-            idle = false;
-            dx -= 1 * 0.5;
-            idle = true;
-            
-        }
-        if (right) {
-            idle = false;
-            dx += 1 * 1.5;
-            idle = true;
-            
-        }
+        if(pl.alive == true){
+            if (left) {
+                idle = false;
+                dx -= 1 * 0.5;
+                idle = true;
 
-        if (dx > WIDTH - 50 && stage == 1) {
-            stage = 2;
-            dx = 250;
-            dy = 250;
+            }
+            if (right) {
+                idle = false;
+                dx += 1 * 1.5;
+                idle = true;
+
+            }
+
+            if (dx > WIDTH - 50 && stage == 1) {
+                stage = 2;
+                dx = 250;
+                dy = 250;
+            }
+            else if (dx > WIDTH - 50 && stage == 2) {
+                stage = 3;
+                dx = 100;
+                dy = 250;
+            }
+            if (dy > HEIGHT - 10) {
+                dy -= 10;
+            }
+            pl.setPos(dx, dy);
         }
-        if (dy > HEIGHT - 10) {
-            dy -= 10;
+        if(e1.alive){
+            moveE();
         }
-        pl.setPos(dx, dy);
-        //e1.move();
     }
 
+    public void moveE(){
+        int pX = pl.getX(),eX = e1.getX();
+        int pY = pl.getY(),eY = e1.getY();
+        
+        while(eX > pX)
+            eX--;
+        while(eY > pY)
+            eY--;
+        while(eX < pX)
+            eX++;
+        while(eY < pY)
+            eY++;
+    }
+    
     //Rendering graphics
     public void render(Graphics2D g2d) {
         
 
-        if(stage == 1){
+        if(stage == 1){    
             bk1.render(g2d);
         }else if(stage == 2){
             bk2.render(g2d);
         }
+//        else if(stage == 3){
+//            bk3.render(g2d);
+//        }
             
-        
-        if(idle = true){
-            pl.render(g2d,p,150,50);
-
-        }
-        else if(idle = true){
-
-            if(y == 0){
-                pl.render(g2d,pW1,150,50);
-                y = 1;
-            }
-            else if(y == 1){
+        if(pl.alive == true){
+            if(idle = true){
                 pl.render(g2d,p,150,50);
-                y = 2;
+
             }
-            else if(y == 2){
-                pl.render(g2d,pW2,150,50);
-                y = 0;
+            else if(idle = true){
+
+                if(y == 0){
+                    pl.render(g2d,pW1,150,50);
+                    y = 1;
+                }
+                else if(y == 1){
+                    pl.render(g2d,p,150,50);
+                    y = 2;
+                }
+                else if(y == 2){
+                    pl.render(g2d,pW2,150,50);
+                    y = 0;
+                }
             }
         }
-            //e1.render(g2d, 50, 100, p);
+        if(e1.alive)
+            e1.render(g2d,chrE ,50, 100);
     }
     
 }
