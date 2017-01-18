@@ -27,7 +27,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean running;
     private Thread thread;
     private long targetT;
-    public static Image bk1,bk2;
     public static Image p,pW1,pW2;
     //Rendering
     private Graphics2D g2d;
@@ -36,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private final int SIZE = 20;
     private Player pl;
     private Enemy e1;
+    public Stage bk1,bk2;
     //Variables
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
@@ -149,23 +149,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         File char1W1 = new File(chr1W1.getPath());
         File char1W2 = new File(chr1W2.getPath());
         
-        
+        bk1 = new Stage(WIDTH,HEIGHT,back1);
+        bk1.set();
+        bk2 = new Stage(WIDTH,HEIGHT,back2);
+        bk2.set();
         try {
-            if(stage == 1){
-                bk1 = ImageIO.read(back1);
-                bk1 = bk1.getScaledInstance(WIDTH, HEIGHT, 1);
-            }
-            if(stage == 2){
-                bk2 = ImageIO.read(back2);
-                bk2 = bk2.getScaledInstance(WIDTH, HEIGHT, 1);
-            }
             p = ImageIO.read(char1);
-            p = p.getScaledInstance(50, 150, 1);
+            p = p.getScaledInstance(50, 150, ERROR);
             pW1 = ImageIO.read(char1W1);
-            pW1 = pW1.getScaledInstance(50, 150, 1);
-            pW2 = ImageIO.read(char1W2);
-            pW2 = pW2.getScaledInstance(50, 150, 1);
-            
+            pW1 = pW1.getScaledInstance(50, 150, ERROR);
+            pW2 = ImageIO.read(char1W2); 
+            pW2 = pW2.getScaledInstance(50, 150, ERROR);
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -223,29 +217,31 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     //Rendering graphics
     public void render(Graphics2D g2d) {
+        
+
         if(stage == 1){
-            //g2d.clearRect(0, 0, WIDTH, HEIGHT);
-            g2d.drawImage(bk1, 0,0,null);
+            bk1.render(g2d);
         }else if(stage == 2){
-            //g2d.clearRect(0, 0, WIDTH, HEIGHT);
-            g2d.drawImage(bk2, 0,0,null);
+            bk2.render(g2d);
         }
+            
+        
         if(idle = true){
-            //pl.render(g2d,p);
+            pl.render(g2d,p,150,50);
 
         }
-        if(idle = true){
+        else if(idle = true){
 
             if(y == 0){
-                pl.render(g2d,pW1);
+                pl.render(g2d,pW1,150,50);
                 y = 1;
             }
             else if(y == 1){
-                pl.render(g2d,p);
+                pl.render(g2d,p,150,50);
                 y = 2;
             }
             else if(y == 2){
-                pl.render(g2d,pW2);
+                pl.render(g2d,pW2,150,50);
                 y = 0;
             }
         }
