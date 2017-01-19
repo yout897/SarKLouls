@@ -16,13 +16,11 @@ import java.awt.Rectangle;
  */
 public class Enemy {
     
-    public int x,y,size,size2;
+    public int x,y;
     int health,damage;
     boolean alive,right,left;
     
-    Enemy(int size,int size2,int health,boolean alive,int damage){
-        this.size = size;
-        this.size2 = size2;
+    Enemy(int health,boolean alive,int damage){
         this.health = health;
         this.alive = alive;
         this.damage = damage;
@@ -51,7 +49,7 @@ public class Enemy {
         return alive;
     }
     public Rectangle getBound(){
-        return new Rectangle(x,y,size,size2);
+        return new Rectangle(x,y);
     }
     
     public void render(Graphics2D g2d,Image iL,Image iR,int height,int width){

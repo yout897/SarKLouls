@@ -179,8 +179,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         
         running = true;
 
-        pl = new Entity(SIZE, SIZE,100,true,5);
-        e1 = new Enemy(SIZE,SIZE,100,true,5);
+        pl = new Entity(100,true,5);
+        e1 = new Enemy(100,true,5);
         e1.setPos(800, 330);
     }
 
@@ -245,24 +245,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             if(idle = true){
                 if(right){
                     pl.render(g2d,p,150,50);
+//                    if(y == 0){
+//                        pl.render(g2d,pW1,150,50);
+//                        y = 1;
+//                    }
+//                    else if(y == 1){
+//                        pl.render(g2d,p,150,50);
+//                        y = 2;
+//                    }
+//                    else if(y == 2){
+//                        pl.render(g2d,pW2,150,50);
+//                        y = 0;
+//                    }
                 }
                 else if(!right){
                     pl.render(g2d,pL,150,50);
-                }
-            }
-            else if(idle = true){
-
-                if(y == 0){
-                    pl.render(g2d,pW1,150,50);
-                    y = 1;
-                }
-                else if(y == 1){
-                    pl.render(g2d,p,150,50);
-                    y = 2;
-                }
-                else if(y == 2){
-                    pl.render(g2d,pW2,150,50);
-                    y = 0;
                 }
             }
         }
