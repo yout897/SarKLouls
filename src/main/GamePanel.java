@@ -27,14 +27,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean running;
     private Thread thread;
     private long targetT;
-    public static Image p,pW1,pW2,chrE;
+    public static Image p,pW1,pW2,chrE,chrER,pL;
     //Rendering
     private Graphics2D g2d;
     private BufferedImage image;
     //Entities
     private final int SIZE = 20;
-    private Entity pl;
-    private Entity e1;
+    public static Entity pl;
+    private Enemy e1;
     public Stage bk1,bk2,bk3;
     //Variables
     public static final int WIDTH = 1000;
@@ -74,11 +74,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        }
         if (k == KeyEvent.VK_A) {
             left = true;
-            walking = true;
         }
         if (k == KeyEvent.VK_D) {
             right = true;
-            walking = true;
         }
     }
 
@@ -94,13 +92,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        }
         if (k == KeyEvent.VK_A) {
             left = false;
-            walking = false;
-            //idle = false;
         }
         if (k == KeyEvent.VK_D) {
             right = false;
-            walking = false;
-            //idle = false;
         }
     }
 
@@ -140,31 +134,42 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         URL bck3 = getClass().getResource("back3.png");
         
         URL chr1 = getClass().getResource("char1.png");
+        URL chr1L = getClass().getResource("char1L.png");
         URL chr1W1 = getClass().getResource("char1W1.png");
         URL chr1W2 = getClass().getResource("char1W2.png");
         URL chE = getClass().getResource("charE.png");
+        URL chER = getClass().getResource("charER.png");
         
         File back1 = new File(bck1.getPath());
         File back2 = new File(bck2.getPath());
         File back3 = new File(bck3.getPath());
         
         File char1 = new File(chr1.getPath());
+        File char1L = new File(chr1L.getPath());
         File char1W1 = new File(chr1W1.getPath());
         File char1W2 = new File(chr1W2.getPath());
         File charE = new File(chE.getPath());
+        File charER = new File(chER.getPath());
         
         bk1 = new Stage(WIDTH,HEIGHT,back1);
+        bk1.set();
         bk2 = new Stage(WIDTH,HEIGHT,back2);
+        bk2.set();
         bk3 = new Stage(WIDTH,HEIGHT,back3);
+        bk3.set();
         try {
             p = ImageIO.read(char1);
             p = p.getScaledInstance(50, 150, ERROR);
+            pL = ImageIO.read(char1L);
+            pL = pL.getScaledInstance(50, 150, ERROR);
             pW1 = ImageIO.read(char1W1);
             pW1 = pW1.getScaledInstance(50, 150, ERROR);
             pW2 = ImageIO.read(char1W2); 
             pW2 = pW2.getScaledInstance(50, 150, ERROR);
             chrE = ImageIO.read(charE);
             chrE = chrE.getScaledInstance(60,120,ERROR);
+            chrER = ImageIO.read(charER);
+            chrER = chrER.getScaledInstance(60,120,ERROR);
         } catch (IOException ex) {
             Logger.getLogger(GamePanel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,8 +180,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         running = true;
 
         pl = new Entity(SIZE, SIZE,100,true,5);
-        e1 = new Entity(SIZE,SIZE,100,false,5);
-        e1.setPos(2000, 250);
+        e1 = new Enemy(SIZE,SIZE,100,true,5);
+        e1.setPos(800, 330);
     }
 
     //Draws the background and places anything that needs to be rendered ontop
@@ -197,16 +202,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 //        }
         if(pl.alive == true){
             if (left) {
-                idle = false;
                 dx -= 1 * 0.5;
-                idle = true;
-
             }
             if (right) {
-                idle = false;
                 dx += 1 * 1.5;
-                idle = true;
-
             }
 
             if (dx > WIDTH - 50 && stage == 1) {
@@ -224,23 +223,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             pl.setPos(dx, dy);
         }
-        if(e1.alive){
-            moveE();
+        if(e1.alive && stage == 2){
+            e1.moveE();
         }
-    }
-
-    public void moveE(){
-        int pX = pl.getX(),eX = e1.getX();
-        int pY = pl.getY(),eY = e1.getY();
-        
-        while(eX > pX)
-            eX--;
-        while(eY > pY)
-            eY--;
-        while(eX < pX)
-            eX++;
-        while(eY < pY)
-            eY++;
     }
     
     //Rendering graphics
@@ -252,14 +237,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }else if(stage == 2){
             bk2.render(g2d);
         }
-//        else if(stage == 3){
-//            bk3.render(g2d);
-//        }
+        else if(stage == 3){
+            bk3.render(g2d);
+        }
             
         if(pl.alive == true){
             if(idle = true){
-                pl.render(g2d,p,150,50);
-
+                if(right){
+                    pl.render(g2d,p,150,50);
+                }
+                else if(!right){
+                    pl.render(g2d,pL,150,50);
+                }
             }
             else if(idle = true){
 
@@ -277,8 +266,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 }
             }
         }
-        if(e1.alive)
-            e1.render(g2d,chrE ,50, 100);
+        if(e1.alive && stage == 2)
+            e1.render(g2d,chrE,chrER,70, 70);
     }
     
 }

@@ -10,13 +10,17 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Entity {
+/**
+ *
+ * @author aldic2547
+ */
+public class Enemy {
     
     public int x,y,size,size2;
     int health,damage;
-    boolean alive;
+    boolean alive,right,left;
     
-    public Entity(int size,int size2,int health,boolean alive,int damage){
+    Enemy(int size,int size2,int health,boolean alive,int damage){
         this.size = size;
         this.size2 = size2;
         this.health = health;
@@ -49,12 +53,28 @@ public class Entity {
     public Rectangle getBound(){
         return new Rectangle(x,y,size,size2);
     }
-    public boolean colliding(Entity e){
-        if(e == this)return false;
-        return getBound().intersects(e.getBound());
-    }
-    public void render(Graphics2D g2d,Image i,int height,int width){
+    
+    public void render(Graphics2D g2d,Image iL,Image iR,int height,int width){
         //g2d.fillRect(x + 1, y + 1, size - 2, size2 - 2);
-        g2d.drawImage(i, x + 1, y + 1,width,height, null);
+        if(left)
+            g2d.drawImage(iL, x + 1, y + 1,width,height, null);
+        else if(right)
+            g2d.drawImage(iR, x + 1, y + 1,width,height, null);
+    }
+    
+    public void moveE(){
+        int pX = GamePanel.pl.x,eX = this.x;
+        //int pY = GamePanel.pl.y,eY = this.y;
+        
+        if(eX > pX + 150){
+            right = false;
+            setX(getX() - 1);
+            left = true;
+        }
+        if(eX < pX - 150){
+            left = false;
+            setX(getX() + 1);
+            right = true;
+        }
     }
 }
