@@ -32,7 +32,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private Graphics2D g2d;
     private BufferedImage image;
     //Entities
-    private final int SIZE = 20;
     public static Entity pl;
     private Enemy e1;
     public Stage bk1,bk2,bk3;
