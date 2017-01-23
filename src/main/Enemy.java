@@ -14,7 +14,7 @@ import java.awt.Rectangle;
  *
  * @author aldic2547
  */
-public class Enemy {
+public class Enemy{
     
     public int x,y;
     int health,damage;
