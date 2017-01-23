@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -19,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
@@ -39,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
     private int dx=250, dy=250,stage = 1,y = 0;
-    private boolean grounded = true,up, down, left, right,idle = true,walking = false;
+    private boolean grounded = true, left, right,idle = true,walking = false,space = false;
     
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -64,36 +67,28 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
-
-//        if (k == KeyEvent.VK_W) {
-//            
-//        }
-//        if (k == KeyEvent.VK_S) {
-//            down = true;
-//        }
         if (k == KeyEvent.VK_A) {
             left = true;
         }
         if (k == KeyEvent.VK_D) {
             right = true;
         }
+        if (k == KeyEvent.VK_SPACE) {
+            space = true;
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int k = e.getKeyCode();
-
-//        if (k == KeyEvent.VK_W) {
-//            up = false;
-//        }
-//        if (k == KeyEvent.VK_S) {
-//            down = false;
-//        }
         if (k == KeyEvent.VK_A) {
             left = false;
         }
         if (k == KeyEvent.VK_D) {
             right = false;
+        }
+        if (k == KeyEvent.VK_SPACE) {
+            space = false;
         }
     }
 
@@ -192,13 +187,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     //Function to continuosly initialize anything that needs to be checked at all times
     private void update() {
-
-//        if (up) {
-//            dy -= 1 * 1.5;
-//        }
-//        if (down) {
-//            dy += 1 * 0.5;
-//        }
         if(pl.alive == true){
             if (left) {
                 dx -= 1 * 0.5;
@@ -206,7 +194,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             if (right) {
                 dx += 1 * 1.5;
             }
-
+            
+            if(dy == 250){
+                grounded = true;
+            }
+                
+            if(space){
+                grounded = false;
+                if(!grounded){
+                    
+                }   
+            }
+            
             if (dx > WIDTH - 50 && stage == 1) {
                 stage = 2;
                 dx = 250;
@@ -244,18 +243,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             if(idle = true){
                 if(right){
                     pl.render(g2d,p,150,50);
-//                    if(y == 0){
-//                        pl.render(g2d,pW1,150,50);
-//                        y = 1;
-//                    }
-//                    else if(y == 1){
-//                        pl.render(g2d,p,150,50);
-//                        y = 2;
-//                    }
-//                    else if(y == 2){
-//                        pl.render(g2d,pW2,150,50);
-//                        y = 0;
-//                    }
                 }
                 else if(!right){
                     pl.render(g2d,pL,150,50);
