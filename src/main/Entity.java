@@ -8,18 +8,21 @@ package main;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 
 public class Entity {
     
     public int x,y;
     int health,damage;
     boolean alive;
+    int[] damNum = new int[100];
     
     public Entity(int health,boolean alive,int damage){
         this.health = health;
         this.alive = alive;
         this.damage = damage;
+        for(int i = 0;i < damage;i++){
+            damNum[i] = i;
+        }
     }
     public int getX(){
         return x;
@@ -44,15 +47,18 @@ public class Entity {
     public boolean alive(){
         return alive;
     }
-    public Rectangle getBound(){
-        return new Rectangle(x,y);
-    }
-    public boolean colliding(Entity e){
-        if(e == this)return false;
-        return getBound().intersects(e.getBound());
+    public void damage(int d){
+        this.health -= d;
     }
     public void render(Graphics2D g2d,Image i,int height,int width){
-        //g2d.fillRect(x + 1, y + 1, size - 2, size2 - 2);
         g2d.drawImage(i, x + 1, y + 1,width,height, null);
+    }
+    public void swing(int eHealth,Enemy e){
+        int pX = GamePanel.pl.x,eX = this.x;
+        int rand = 0;
+        
+        rand = (int)(Math.random()*100);
+        eHealth = eHealth - damNum[rand];
+        e.damage(eHealth);
     }
 }

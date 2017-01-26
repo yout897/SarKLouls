@@ -8,7 +8,6 @@ package main;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 
 /**
  *
@@ -19,11 +18,15 @@ public class Enemy{
     public int x,y;
     int health,damage;
     boolean alive,right,left;
+    int[] damNum = new int[100];
     
     Enemy(int health,boolean alive,int damage){
         this.health = health;
         this.alive = alive;
         this.damage = damage;
+        for(int i = 0;i < damage;i++){
+            damNum[i] = i;
+        }
     }
     public int getX(){
         return x;
@@ -48,12 +51,10 @@ public class Enemy{
     public boolean alive(){
         return alive;
     }
-    public Rectangle getBound(){
-        return new Rectangle(x,y);
+    public void damage(int d){
+        this.health -= d;
     }
-    
     public void render(Graphics2D g2d,Image iL,Image iR,int height,int width){
-        //g2d.fillRect(x + 1, y + 1, size - 2, size2 - 2);
         if(left)
             g2d.drawImage(iL, x + 1, y + 1,width,height, null);
         else if(right)
@@ -62,7 +63,6 @@ public class Enemy{
     
     public void moveE(){
         int pX = GamePanel.pl.x,eX = this.x;
-        //int pY = GamePanel.pl.y,eY = this.y;
         
         if(eX > pX + 150){
             right = false;
@@ -73,6 +73,36 @@ public class Enemy{
             left = false;
             setX(getX() + 1);
             right = true;
+        }
+    }
+    
+    public void swing(int pHealth,Entity e){
+        int pX = GamePanel.pl.x,eX = this.x;
+        int rand = 0;
+        
+        if(eX > pX + 150){
+            rand = (int)(Math.random()*100);
+            pHealth = pHealth - damNum[rand];
+            e.damage(pHealth);
+        }
+        else if(eX < pX - 150){
+            rand = (int)(Math.random()*100);
+            pHealth = pHealth - damNum[rand];
+            e.damage(pHealth);
+        }
+    }
+    
+    public boolean close(){
+        int pX = GamePanel.pl.x,eX = this.x;
+        
+        if(eX > pX + 150){
+            return true;
+        }
+        else if(eX < pX - 150){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 }

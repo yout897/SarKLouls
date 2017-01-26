@@ -9,19 +9,17 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
@@ -41,8 +39,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     //Variables
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
-    private int dx=250, dy=250,stage = 1,y = 0;
-    private boolean grounded = true, left, right,idle = true,walking = false,space = false;
+    private int dx=250, dy=250,stage = 1;
+    private boolean left, right,idle = true,walking = false,rAtk,lAtk,eAttack,pAttack;
+    public TimerTask timer;
     
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -73,8 +72,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (k == KeyEvent.VK_D) {
             right = true;
         }
-        if (k == KeyEvent.VK_SPACE) {
-            space = true;
+        if (k == KeyEvent.VK_RIGHT) {
+            rAtk = true;
+        }
+        if (k == KeyEvent.VK_LEFT) {
+            lAtk = true;
         }
     }
 
@@ -87,8 +89,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (k == KeyEvent.VK_D) {
             right = false;
         }
-        if (k == KeyEvent.VK_SPACE) {
-            space = false;
+        if (k == KeyEvent.VK_RIGHT) {
+            rAtk = false;
+        }
+        if (k == KeyEvent.VK_LEFT) {
+            lAtk = false;
         }
     }
 
@@ -151,6 +156,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         bk2.set();
         bk3 = new Stage(WIDTH,HEIGHT,back3);
         bk3.set();
+        
         try {
             p = ImageIO.read(char1);
             p = p.getScaledInstance(50, 150, ERROR);
@@ -194,18 +200,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             if (right) {
                 dx += 1 * 1.5;
             }
-            
-            if(dy == 250){
-                grounded = true;
-            }
-                
-            if(space){
-                grounded = false;
-                if(!grounded){
-                    
-                }   
-            }
-            
             if (dx > WIDTH - 50 && stage == 1) {
                 stage = 2;
                 dx = 250;
@@ -216,14 +210,33 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 dx = 100;
                 dy = 250;
             }
+            if (dx < 50 && stage == 2) {
+                stage = 1;
+                dx = 750;
+                dy = 250;
+            }
+            else if (dx < 50 && stage == 3) {
+                stage = 2;
+                dx = 750;
+                dy = 250;
+            }
             if (dy > HEIGHT - 10) {
                 dy -= 10;
             }
+            if(e1.close() == true && rAtk == true || lAtk == true && pAttack = false){
+                pl.swing(e1.health,e1);
+            }
+            
             pl.setPos(dx, dy);
         }
         if(e1.alive && stage == 2){
             e1.moveE();
+            if(eAttack = false)
+                e1.swing(pl.health,pl);
+            
         }
+        System.out.println("Player" + pl.health);
+        System.out.println("Enemy" + e1.health);
     }
     
     //Rendering graphics
@@ -231,14 +244,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         
 
         if(stage == 1){    
-            bk1.render(g2d);
+            bk1.render(g2d,0,0);
         }else if(stage == 2){
-            bk2.render(g2d);
+            bk2.render(g2d,0,0);
         }
         else if(stage == 3){
-            bk3.render(g2d);
+            bk3.render(g2d,0,0);
         }
-            
+        
         if(pl.alive == true){
             if(idle = true){
                 if(right){
@@ -252,5 +265,4 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if(e1.alive && stage == 2)
             e1.render(g2d,chrE,chrER,70, 70);
     }
-    
 }

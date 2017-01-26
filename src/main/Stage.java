@@ -28,8 +28,6 @@ public class Stage {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
         this.bk = back;
-        
-        
     }
     
     public void set(){
@@ -41,7 +39,7 @@ public class Stage {
         back = back.getScaledInstance(WIDTH, HEIGHT, 1);
     }
     
-    public void render(Graphics2D g){
-        g.drawImage(back, 0, 0, null);
+    public void render(Graphics2D g,int x, int y){
+        g.drawImage(back, x, y, null);
     }
 }
