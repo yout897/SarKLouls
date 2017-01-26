@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 600;
     private int dx=250, dy=250,stage = 1;
-    private boolean left, right,idle = true,walking = false,rAtk,lAtk,eAttack,pAttack;
+    private boolean left, right,idle = true,walking = false,rAtk,lAtk,eAttack = false,pAttack = false;
     public TimerTask timer;
     
     public GamePanel() {
@@ -222,21 +222,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             if (dy > HEIGHT - 10) {
                 dy -= 10;
-            }
-            if(e1.close() == true && rAtk == true || lAtk == true && pAttack = false){
-                pl.swing(e1.health,e1);
-            }
-            
+            }           
             pl.setPos(dx, dy);
         }
-        if(e1.alive && stage == 2){
-            e1.moveE();
-            if(eAttack = false)
-                e1.swing(pl.health,pl);
-            
-        }
-        System.out.println("Player" + pl.health);
-        System.out.println("Enemy" + e1.health);
     }
     
     //Rendering graphics

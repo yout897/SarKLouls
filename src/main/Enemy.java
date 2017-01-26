@@ -18,13 +18,15 @@ public class Enemy{
     public int x,y;
     int health,damage;
     boolean alive,right,left;
-    int[] damNum = new int[100];
+    int[] damNum = new int[5];
     
     Enemy(int health,boolean alive,int damage){
         this.health = health;
         this.alive = alive;
         this.damage = damage;
+        int rand = 0;
         for(int i = 0;i < damage;i++){
+            rand = (int)(Math.random()*12);
             damNum[i] = i;
         }
     }
@@ -52,7 +54,7 @@ public class Enemy{
         return alive;
     }
     public void damage(int d){
-        this.health -= d;
+        this.health = health - d;
     }
     public void render(Graphics2D g2d,Image iL,Image iR,int height,int width){
         if(left)
@@ -81,28 +83,14 @@ public class Enemy{
         int rand = 0;
         
         if(eX > pX + 150){
-            rand = (int)(Math.random()*100);
+            rand = (int)(Math.random()*5);
             pHealth = pHealth - damNum[rand];
             e.damage(pHealth);
         }
         else if(eX < pX - 150){
-            rand = (int)(Math.random()*100);
+            rand = (int)(Math.random()*5);
             pHealth = pHealth - damNum[rand];
             e.damage(pHealth);
-        }
-    }
-    
-    public boolean close(){
-        int pX = GamePanel.pl.x,eX = this.x;
-        
-        if(eX > pX + 150){
-            return true;
-        }
-        else if(eX < pX - 150){
-            return true;
-        }
-        else{
-            return false;
         }
     }
 }
