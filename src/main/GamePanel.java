@@ -72,12 +72,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (k == KeyEvent.VK_D) {
             right = true;
         }
-        if (k == KeyEvent.VK_RIGHT) {
-            rAtk = true;
-        }
-        if (k == KeyEvent.VK_LEFT) {
-            lAtk = true;
-        }
     }
 
     @Override
@@ -88,12 +82,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
         if (k == KeyEvent.VK_D) {
             right = false;
-        }
-        if (k == KeyEvent.VK_RIGHT) {
-            rAtk = false;
-        }
-        if (k == KeyEvent.VK_LEFT) {
-            lAtk = false;
         }
     }
 

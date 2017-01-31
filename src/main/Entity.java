@@ -14,17 +14,11 @@ public class Entity {
     public int x,y;
     int health,damage;
     boolean alive;
-    int[] damNum = new int[5];
     
     public Entity(int health,boolean alive,int damage){
         this.health = health;
         this.alive = alive;
         this.damage = damage;
-        int rand = 0;
-        for(int i = 0;i < damage;i++){
-            rand = (int)(Math.random()*12);
-            damNum[i] = i;
-        }
     }
     public int getX(){
         return x;
@@ -49,17 +43,7 @@ public class Entity {
     public boolean alive(){
         return alive;
     }
-    public void damage(int d){
-        this.health -= d;
-    }
     public void render(Graphics2D g2d,Image i,int height,int width){
         g2d.drawImage(i, x + 1, y + 1,width,height, null);
-    }
-    public void swing(int eHealth,Enemy e){
-        int rand = 0;
-        
-        rand = (int)(Math.random()*5);
-        eHealth = eHealth - damNum[rand];
-        e.damage(eHealth);
     }
 }
